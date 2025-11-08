@@ -12,9 +12,9 @@ import {
 import { CreateUserParams } from "@/types"
 
 export async function POST(req: Request) {
-    const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
+    const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SIGNING_SECRET
     if (!WEBHOOK_SECRET) {
-        throw new Error("Missing CLERK_WEBHOOK_SECRET")
+        throw new Error("Missing CLERK_WEBHOOK_SIGNING_SECRET")
     }
 
     const payload = await req.text()
