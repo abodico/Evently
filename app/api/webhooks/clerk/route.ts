@@ -18,6 +18,7 @@ export async function POST(req: Request) {
     }
 
     const payload = await req.text()
+    console.log(payload)
     const headerList = headers()
     const svix_id = headerList.get("svix-id")
     const svix_timestamp = headerList.get("svix-timestamp")
