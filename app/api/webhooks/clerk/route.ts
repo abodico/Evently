@@ -1,6 +1,6 @@
 // app/api/webhooks/clerk/route.ts
 import { verifyWebhook } from "@clerk/nextjs/webhooks"
-import { WebhookEvent } from "@clerk/nextjs/server"
+import { clerkClient, WebhookEvent } from "@clerk/nextjs/server"
 import { NextRequest, NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb/database"
 import User from "@/lib/mongodb/database/models/user.model"
@@ -34,8 +34,16 @@ export async function POST(req: NextRequest) {
                     data.email_addresses[0]?.email_address.split("@")[0],
                 photo: data.image_url,
             }
-
+            // 1️⃣ Create user in Mongo
             const newUser = await createUser(user)
+
+            // 2️⃣ Save the MongoDB _id inside Clerk public metadata
+            const client = await clerkClient()
+            client.users.updateUserMetadata(data.id, {
+                publicMetadata: {
+                    userId: newUser._id.toString(),
+                },
+            })
             return NextResponse.json({ message: "User created", user: newUser })
         }
 
