@@ -1,0 +1,35 @@
+import EventForm from "@/components/ui/shared/EventForm"
+import { getEventById } from "@/lib/mongodb/actions/event.actions"
+import { getUserByClerkId } from "@/lib/mongodb/actions/user.actions"
+import { auth } from "@clerk/nextjs/server"
+import React from "react"
+
+type UpdateEventProps = {
+    params: {
+        id: string
+    }
+}
+const page = async ({ params: { id } }: UpdateEventProps) => {
+    const { userId } = await auth()
+    const event = await getEventById(id)
+    const currentUserId = await getUserByClerkId(userId ?? "")
+    return (
+        <>
+            <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
+                <h3 className="wrapper h3-bold text-center sm:text-left">
+                    Update Event
+                </h3>
+            </section>
+            <div className="wrapper my-8">
+                <EventForm
+                    userId={currentUserId?._id!}
+                    type="Update"
+                    event={event}
+                    eventId={event._id}
+                />
+            </div>
+        </>
+    )
+}
+
+export default page

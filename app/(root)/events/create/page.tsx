@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server"
 import React from "react"
 
 const page = async () => {
-    const { sessionClaims, userId } = await auth()
+    const { userId } = await auth()
     return (
         <>
             <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
