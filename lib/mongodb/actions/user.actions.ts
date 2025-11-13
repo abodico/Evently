@@ -31,12 +31,14 @@ export async function getUserById(userId: string) {
 }
 export async function getUserByClerkId(clerkId: string) {
     try {
-        await connectToDatabase()
+        if (clerkId && clerkId.length > 0) {
+            await connectToDatabase()
 
-        const user = await User.findOne({ clerkId })
+            const user = await User.findOne({ clerkId })
 
-        if (!user) throw new Error("User not found")
-        return JSON.parse(JSON.stringify(user))
+            if (!user) throw new Error("User not found")
+            return JSON.parse(JSON.stringify(user))
+        }
     } catch (error) {
         handleError(error)
     }
