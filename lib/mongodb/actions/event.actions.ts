@@ -95,7 +95,7 @@ export const getAllEvents = async ({
         const skipAmount = (Number(page) - 1) * limit
         const eventsQuery = Event.find(conditions)
             .sort({ createdAt: "desc" })
-            .skip(0)
+            .skip(skipAmount)
             .limit(limit)
 
         const events = await populateEvent(eventsQuery)
