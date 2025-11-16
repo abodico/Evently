@@ -8,7 +8,7 @@ type FileUploaderProps = {
 
 import { useDropzone } from "@uploadthing/react"
 import { generateClientDropzoneAccept } from "uploadthing/client"
-import { Button } from "../button"
+import { Button } from "../ui/button"
 import { convertFileToUrl } from "@/lib/utils"
 
 const FileUploader = ({

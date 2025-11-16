@@ -1,4 +1,4 @@
-import EventForm from "@/components/ui/shared/EventForm"
+import EventForm from "@/components/shared/EventForm"
 import { getEventById } from "@/lib/mongodb/actions/event.actions"
 import { getUserByClerkId } from "@/lib/mongodb/actions/user.actions"
 import { auth } from "@clerk/nextjs/server"

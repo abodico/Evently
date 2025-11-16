@@ -1,5 +1,5 @@
-import CheckoutButton from "@/components/ui/shared/CheckoutButton"
-import Collection from "@/components/ui/shared/Collection"
+import CheckoutButton from "@/components/shared/CheckoutButton"
+import Collection from "@/components/shared/Collection"
 import {
     getEventById,
     getRelatedEventsByCategory,
@@ -113,9 +113,9 @@ const page = async ({ params: { id }, searchParams }: SearchParamProps) => {
                     emptyTitle="No Events Found!"
                     emptyStateSubtext="Come back later."
                     collectionType="All_Events"
-                    limit={6}
-                    page={1}
-                    totalPages={2}
+                    limit={3}
+                    page={searchParams.page as string}
+                    totalPages={relatedEvents?.totalPages}
                 />
             </section>
         </>

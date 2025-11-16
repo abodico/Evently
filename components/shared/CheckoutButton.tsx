@@ -3,7 +3,7 @@
 import { IEvent } from "@/lib/mongodb/database/models/event.model"
 import { useUser } from "@clerk/nextjs"
 import React from "react"
-import { Button } from "../button"
+import { Button } from "../ui/button"
 import { SignedIn, SignedOut } from "@clerk/clerk-react"
 import Link from "next/link"
 import Checkout from "./Checkout"

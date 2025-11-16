@@ -1,18 +1,30 @@
 import { Button } from "@/components/ui/button"
-import Collection from "@/components/ui/shared/Collection"
+import Collection from "@/components/shared/Collection"
 import { getEventsByUser } from "@/lib/mongodb/actions/event.actions"
+import { getOrdersByUser } from "@/lib/mongodb/actions/order.actions"
 import { getUserByClerkId } from "@/lib/mongodb/actions/user.actions"
+import { IOrder } from "@/lib/mongodb/database/models/order.model"
+import { SearchParamProps } from "@/types"
 import { auth } from "@clerk/nextjs/server"
 import Link from "next/link"
 import React from "react"
 
-const page = async () => {
+const page = async ({ searchParams }: SearchParamProps) => {
     const { userId } = await auth()
+    const ordersPage = Number(searchParams?.ordersPage) || 1
     const currentUser = await getUserByClerkId(userId ?? "")
+    const orders = await getOrdersByUser({
+        userId: currentUser?._id,
+        page: ordersPage,
+    })
+    const orderedEvents = orders?.data.map((order: IOrder) => order.event || [])
+    const eventsPage = Number(searchParams?.eventsPage) || 1
     const organizedEvents = await getEventsByUser({
         userId: currentUser?._id,
-        page: 1,
+        page: eventsPage,
     })
+
+    console.log(orderedEvents)
     return (
         <>
             {/* my tickets */}
@@ -26,18 +38,18 @@ const page = async () => {
                     </Button>
                 </div>
             </section>
-            {/* <section className="wrapper my-8">
+            <section className="wrapper my-8">
                 <Collection
-                    data={[]}
+                    data={orderedEvents}
                     emptyTitle="No Event tickets purchased yet!"
                     emptyStateSubtext="No worries - plenty of exciting events to explore!"
                     collectionType="My_Tickets"
                     limit={3}
-                    page={1}
-                    totalPages={2}
+                    page={ordersPage}
+                    totalPages={orders?.totalPages}
                     urlParamName="ordersPage"
                 />
-            </section> */}
+            </section>
             {/* my events */}
             {/* events organzied */}
             <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
@@ -57,8 +69,8 @@ const page = async () => {
                     emptyStateSubtext="Go create some now"
                     collectionType="Events_Organized"
                     limit={6}
-                    page={1}
-                    totalPages={2}
+                    page={eventsPage}
+                    totalPages={organizedEvents?.totalPages}
                     urlParamName="eventsPage"
                 />
             </section>

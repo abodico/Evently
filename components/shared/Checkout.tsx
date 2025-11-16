@@ -1,6 +1,6 @@
 import { IEvent } from "@/lib/mongodb/database/models/event.model"
 import React from "react"
-import { Button } from "../button"
+import { Button } from "../ui/button"
 import { POST } from "@/app/api/checkout_sessions/route"
 
 type CheckoutProps = {
